@@ -48,7 +48,7 @@ public class PaisBD {
         }
     }
 
-    public static List<Pais> getPaises(){
+    public List<Pais> getPaises(){
         List<Pais> paises = new ArrayList<>();
         try(ResultSet rs = statement.executeQuery("select * from paises")){
             while(rs.next()){
@@ -67,7 +67,7 @@ public class PaisBD {
         return null;
     }
 
-    public static Pais getPais(String nombre){
+    public Pais getPais(String nombre){
         try{
             String selectPais = "select * from paises where nombre = ?";
             PreparedStatement ps = connection.prepareStatement(selectPais);
@@ -89,7 +89,7 @@ public class PaisBD {
         return null;
     }
 
-    private static void insertPais(Pais pais){
+    public static void insertPais(Pais pais){
         try{
             String insert = "insert into paises (nombre,num_habitantes,capital,moneda) values (?,?,?,?)";
             PreparedStatement ps = connection.prepareStatement(insert);
@@ -107,7 +107,7 @@ public class PaisBD {
         }
     }
 
-    private static void updatePais(String nombreAntiguo, Pais pais){
+    public static void updatePais(Pais pais){
         try{
             String update = "update paises set nombre = ?, NUM_HABITANTES = ?, CAPITAL = ?, moneda = ? where nombre = ?";
             PreparedStatement ps = connection.prepareStatement(update);
@@ -115,7 +115,7 @@ public class PaisBD {
             ps.setInt(2,pais.getNum_habitantes());
             ps.setString(3,pais.getCapital());
             ps.setString(4,pais.getMoneda());
-            ps.setString(5,nombreAntiguo);
+            ps.setString(5,pais.getNombre());
 
             int filasActualizadas = ps.executeUpdate();
             if (filasActualizadas == 1) {
@@ -131,7 +131,7 @@ public class PaisBD {
         }
     }
 
-    private static void deletePais(Pais pais){
+    public static void deletePais(Pais pais){
         try{
             String delete = "delete from paises where nombre = ?";
             PreparedStatement ps = connection.prepareStatement(delete);
